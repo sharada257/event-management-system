@@ -3,8 +3,8 @@ from .models import Event, EventApproval, Group, GroupMember, EventRegistration,
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['event_name', 'event_date', 'end_date', 'location', 'event_type', 'event_status', 'registration_status', 'approval_status', 'club', 'department']
-    search_fields = ['event_name', 'club__club_name', 'department__name']
+    list_display = ['event_name', 'event_date', 'end_date', 'location', 'event_type', 'event_status', 'registration_status', 'approval_status', 'club']
+    search_fields = ['event_name', 'club__club_name']
 
 @admin.register(EventApproval)
 class EventApprovalAdmin(admin.ModelAdmin):
@@ -18,7 +18,7 @@ class GroupAdmin(admin.ModelAdmin):
 
 @admin.register(GroupMember)
 class GroupMemberAdmin(admin.ModelAdmin):
-    list_display = ['group', 'student', 'joined_at', 'role']
+    list_display = ['group', 'student', 'joined_at']
     search_fields = ['group__group_name', 'student__user__email']
 
 @admin.register(EventRegistration)

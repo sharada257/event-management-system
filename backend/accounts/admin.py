@@ -6,8 +6,8 @@ User = get_user_model()
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['email', 'role', 'is_active', 'created_at', 'updated_at']
-    search_fields = ['email', 'role']
+    list_display = ['email',  'is_active', 'created_at', 'updated_at']
+    search_fields = ['email']
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
@@ -21,5 +21,5 @@ class TeacherAdmin(admin.ModelAdmin):
 
 @admin.register(Coordinator)
 class CoordinatorAdmin(admin.ModelAdmin):
-    list_display = ['user', 'department']
-    search_fields = ['user__email', 'department__name']
+    list_display = ['user']
+    search_fields = ['user__email']

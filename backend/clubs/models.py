@@ -13,8 +13,6 @@ class Club(BaseModel):
     club_name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     teacher = models.ForeignKey('accounts.Teacher', on_delete=models.SET_NULL, null=True, related_name='supervised_clubs')
-    department = models.ForeignKey('departments.Department', on_delete=models.SET_NULL, null=True, 
-                                  related_name='clubs', blank=True)
 
     def __str__(self):
         return self.club_name

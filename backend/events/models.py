@@ -2,8 +2,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel
+from clubs.models import Club
+from accounts.models import Student, Coordinator
 from django.utils import timezone
-from .models import *
 
 
 class Event(BaseModel):
@@ -41,9 +42,7 @@ class Event(BaseModel):
     event_status = models.CharField(max_length=20, choices=EventStatus.choices, default=EventStatus.UPCOMING)
     registration_status = models.CharField(max_length=20, choices=RegistrationStatus.choices, default=RegistrationStatus.CLOSED)
     approval_status = models.CharField(max_length=20, choices=ApprovalStatus.choices, default=ApprovalStatus.PENDING)
-    department = models.ForeignKey('departments.Department', on_delete=models.SET_NULL, null=True, blank=True, 
-                                  related_name='departmental_events')
-
+    
     def __str__(self):
         return f"{self.event_name} ({self.get_event_status_display()})"
 
@@ -58,10 +57,7 @@ class Event(BaseModel):
             self.event_status = self.EventStatus.COMPLETED
             self.registration_status = self.RegistrationStatus.CLOSED
 
-        # If club has a department, set event department to match
-        if not self.department and self.club.department:
-            self.department = self.club.department
-
+        
         super().save(*args, **kwargs)
 
     class Meta:
@@ -70,7 +66,7 @@ class Event(BaseModel):
             models.Index(fields=['approval_status']),
             models.Index(fields=['club']),
             models.Index(fields=['event_date']),
-            models.Index(fields=['department']),
+            
         ]
 
 
@@ -128,8 +124,7 @@ class GroupMember(BaseModel):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='members')
     student = models.ForeignKey('accounts.Student', on_delete=models.CASCADE, related_name='group_memberships')
     joined_at = models.DateTimeField(default=timezone.now)
-    role = models.CharField(max_length=50, blank=True, null=True)
-
+    
     def __str__(self):
         return f"{self.student.user.get_full_name()} - {self.group.group_name}"
 
